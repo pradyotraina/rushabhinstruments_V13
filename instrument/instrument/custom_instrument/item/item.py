@@ -56,15 +56,15 @@ def label_img(doc,method):
 	qrcimg.thumbnail((72,72))
 	img.paste(qrcimg,(12,12))
 	d = ImageDraw.Draw(img)
-	itemname = textwrap.fill(text = doc.item_name,width=18,max_lines=5,placeholder="...")
+	itemname = textwrap.fill(text = doc.item_name,width=17,max_lines=5,placeholder="...")
 	d.text((90,10), itemname, fill=(0,0,0))
 	d.text((12,96), doc.name, fill=(0,0,0))
 	item_locations = frappe.db.get_list('Item Locations',{'parent':doc.name},pluck='warehouse')
-	locs_str = ""
+	locs_str = "Item Locations: "
 	for loc in item_locations:
 		locs_str += loc
-	locs_str = textwrap.fill(text=locs_str,width=40,max_lines=4,placeholder="...")
-	d.text((12,110), "Item Locations: {0}".format(locs_str), fill=(0,0,0))
+	locs_str = textwrap.fill(text=locs_str,width=35,max_lines=4,placeholder="...")
+	d.text((12,110), locs_str, fill=(0,0,0))
 	barcode = requests.get('https://barcode.tec-it.com/barcode.ashx?data={0}&code=Code128&translate-esc=true'.format(doc.item_code))
 	barc = Image.open(io.BytesIO(barcode.content))
 	barc = barc.resize((180,20))
